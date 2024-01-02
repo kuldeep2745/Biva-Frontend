@@ -31,7 +31,7 @@ const Navigation = () => {
           <img
             src="https://res.cloudinary.com/dwd3qhggm/image/upload/f_auto,q_auto/xrjslp7mams4hpt2mmcn"
             alt="Profile"
-            style={{ width: '80px', height: 'auto', borderRadius: '50%' }}
+            style={{ width: '60px', height: 'auto', borderRadius: '50%' }}
           />
         </div>
       </div>

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TaskList = ({ tasks, onDelete, onEdit }) => {
   const itemsPerPage = 10;
@@ -15,12 +17,23 @@ const TaskList = ({ tasks, onDelete, onEdit }) => {
   const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
 
   const renderTasks = currentTasks.map((task) => (
-    <li key={task._id} className=" list mt-2 list-group-item">
+    <li key={task._id} className="list mt-2 list-group-item">
       {task.name} - {formatDate(task.dueDate)}
-      <button className="m-1 btn btn-primary ml-2" onClick={() => onEdit(task)}>
+      <button
+        className="m-1 btn btn-primary ml-2"
+        onClick={() => {
+          onEdit(task);
+        }}
+      >
         Edit
       </button>
-      <button className="btn btn-danger ml-2" onClick={() => onDelete(task._id)}>
+      <button
+        className="btn btn-danger ml-2"
+        onClick={() => {
+          onDelete(task._id);
+          showNotifications(task.name, 'Task Deleted');
+        }}
+      >
         Delete
       </button>
     </li>
@@ -31,20 +44,37 @@ const TaskList = ({ tasks, onDelete, onEdit }) => {
     pageNumbers.push(i);
   }
 
+  const showNotification = (taskName, operation) => {
+    toast.success(`${taskName}: ${operation}`, {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+  const showNotifications = (taskName, operation) => {
+    toast.error(`${taskName}: ${operation}`, {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
   return (
     <div>
+      <ToastContainer />
       <h2 className="mt-4">Task List</h2>
-      <ul className="list-group">
-        {renderTasks}
-      </ul>
+      <ul className="list-group">{renderTasks}</ul>
       <nav className="mt-3">
         <ul className="pagination">
           {pageNumbers.map((number) => (
             <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-              <button
-                className="page-link"
-                onClick={() => setCurrentPage(number)}
-              >
+              <button className="page-link" onClick={() => setCurrentPage(number)}>
                 {number}
               </button>
             </li>
