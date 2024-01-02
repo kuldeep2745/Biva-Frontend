@@ -12,9 +12,13 @@ const ChartPage = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Task Chart</h2>
-      <Chart data={tasks} />
+    <div className="container">
+      <h2 className="mt-4">Task Chart</h2>
+      <div className="row">
+        <div className="col-md-6">
+          <Chart data={tasks} />
+        </div>
+      </div>
     </div>
   );
 };

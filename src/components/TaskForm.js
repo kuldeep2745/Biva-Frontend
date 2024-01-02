@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import "../App.css";
 
 const TaskForm = ({ onSubmit, taskToEdit }) => {
   const [name, setName] = useState('');
@@ -22,21 +23,44 @@ const TaskForm = ({ onSubmit, taskToEdit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Task Name:
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-      </label>
-      <label>
-        Description:
-        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-      </label>
-      <label>
-        Due Date:
-        <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-      </label>
-      <button type="submit">{taskToEdit ? 'Update' : 'Submit'}</button>
-    </form>
+    <div className=" card w-50 p-3 container mt-4 d-flex justify-content-center align-items-center">
+      <div className="glassmorphism-border p-4 rounded">
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Task Name:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Description:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Due Date:</label>
+            <input
+              type="date"
+              className="form-control"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </div>
+          <div className="d-grid">
+            <button type="submit" className="btn btn-primary">
+              {taskToEdit ? 'Update' : 'Submit'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

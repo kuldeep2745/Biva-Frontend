@@ -63,7 +63,7 @@ const TaskListPage = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <TaskForm onSubmit={editingTask ? handleEditSubmit : handleAdd} taskToEdit={editingTask} />
       <TaskList tasks={tasks} onDelete={handleDelete} onEdit={handleEdit} />
     </div>
