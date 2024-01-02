@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Switch } from 'react-router-dom
 import Navigation from './components/Navigation';
 import TaskListPage from './pages/TaskListPage';
 import ChartPage from './pages/ChartPage';
+import "./App.css"
 
 function App() {
   return (

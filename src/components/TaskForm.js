@@ -1,12 +1,9 @@
-// Import necessary libraries
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../App.css';
 
-// TaskForm component
 const TaskForm = ({ onSubmit, taskToEdit }) => {
   const initialValues = {
     name: taskToEdit ? taskToEdit.name || '' : '',
