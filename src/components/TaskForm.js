@@ -1,57 +1,87 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import "../App.css";
 
+
 const TaskForm = ({ onSubmit, taskToEdit }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [dueDate, setDueDate] = useState('');
-
-  useEffect(() => {
-    if (taskToEdit) {
-      setName(taskToEdit.name || '');
-      setDescription(taskToEdit.description || '');
-      setDueDate(taskToEdit.dueDate || '');
-    }
-  }, [taskToEdit]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({ name, description, dueDate });
-    setName('');
-    setDescription('');
-    setDueDate('');
+  const initialValues = {
+    name: taskToEdit ? taskToEdit.name || '' : '',
+    description: taskToEdit ? taskToEdit.description || '' : '',
+    dueDate: taskToEdit ? taskToEdit.dueDate || '' : '',
   };
 
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Task Name is required'),
+    description: Yup.string().required('Description is required'),
+    dueDate: Yup.date().required('Due Date is required'),
+  });
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: (values) => {
+      onSubmit(values);
+      formik.resetForm();
+    },
+    enableReinitialize: true, // Allow reinitialization when taskToEdit changes
+  });
+
+  // Update initial values when taskToEdit changes
+  React.useEffect(() => {
+    formik.setValues({
+      name: taskToEdit ? taskToEdit.name || '' : '',
+      description: taskToEdit ? taskToEdit.description || '' : '',
+      dueDate: taskToEdit ? new Date(taskToEdit.dueDate).toISOString().split('T')[0] || '' : '',
+    });
+  }, [taskToEdit]);
+
   return (
-    <div className=" card w-50 p-3 container mt-4 d-flex justify-content-center align-items-center">
+    <div className="card w-50 p-3 container mt-4 d-flex justify-content-center align-items-center">
       <div className="glassmorphism-border p-4 rounded">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Task Name:</label>
             <input
               type="text"
-              className="form-control"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              className={`form-control ${formik.touched.name && formik.errors.name ? 'is-invalid' : ''}`}
+              value={formik.values.name}
+              onChange={formik.handleChange('name')}
+              onBlur={formik.handleBlur('name')}
             />
+            {formik.touched.name && formik.errors.name && (
+              <div className="invalid-feedback">{formik.errors.name}</div>
+            )}
           </div>
           <div className="mb-3">
             <label className="form-label">Description:</label>
             <input
               type="text"
-              className="form-control"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              className={`form-control ${
+                formik.touched.description && formik.errors.description ? 'is-invalid' : ''
+              }`}
+              value={formik.values.description}
+              onChange={formik.handleChange('description')}
+              onBlur={formik.handleBlur('description')}
             />
+            {formik.touched.description && formik.errors.description && (
+              <div className="invalid-feedback">{formik.errors.description}</div>
+            )}
           </div>
           <div className="mb-3">
             <label className="form-label">Due Date:</label>
             <input
               type="date"
-              className="form-control"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
+              className={`form-control ${
+                formik.touched.dueDate && formik.errors.dueDate ? 'is-invalid' : ''
+              }`}
+              value={formik.values.dueDate}
+              onChange={formik.handleChange('dueDate')}
+              onBlur={formik.handleBlur('dueDate')}
             />
+            {formik.touched.dueDate && formik.errors.dueDate && (
+              <div className="invalid-feedback">{formik.errors.dueDate}</div>
+            )}
           </div>
           <div className="d-grid">
             <button type="submit" className="btn btn-primary">
