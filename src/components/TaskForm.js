@@ -91,6 +91,7 @@ const TaskForm = ({ onSubmit, taskToEdit }) => {
                 value={formik.values.dueDate}
                 onChange={formik.handleChange('dueDate')}
                 onBlur={formik.handleBlur('dueDate')}
+                min={new Date().toISOString().split('T')[0]} // Set minimum date to current date
               />
               {formik.touched.dueDate && formik.errors.dueDate && (
                 <div className="invalid-feedback">{formik.errors.dueDate}</div>

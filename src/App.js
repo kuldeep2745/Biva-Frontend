@@ -11,7 +11,7 @@ function App() {
       <div>
         <Navigation />
         <Routes>
-          <Route path="/task-list" element={<TaskListPage />} />
+          <Route path="/" element={<TaskListPage />} />
           <Route path="/chart" element={<ChartPage />} />
         </Routes>
       </div>

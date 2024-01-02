@@ -11,7 +11,7 @@ const Navigation = () => {
           <li className="nav-item">
             <Link
               className={`nav-link ${location.pathname === '/task-list' ? 'active' : ''}`}
-              to="/task-list"
+              to="/"
             >
               Task List
             </Link>

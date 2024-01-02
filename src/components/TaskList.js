@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ".././App.css";
 
 const TaskList = ({ tasks, onDelete, onEdit }) => {
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
   const formatDate = (dateString) => {
-    const options = { day: '2-digit', month: '2-digit', year: '2-digit' };
-    const [month, day, year] = new Date(dateString).toLocaleDateString(undefined, options).split('/');
+    const options = { day: "2-digit", month: "2-digit", year: "2-digit" };
+    const [month, day, year] = new Date(dateString)
+      .toLocaleDateString(undefined, options)
+      .split("/");
     return `${day}/${month}/${year}`;
   };
 
@@ -16,37 +19,9 @@ const TaskList = ({ tasks, onDelete, onEdit }) => {
   const indexOfFirstTask = indexOfLastTask - itemsPerPage;
   const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
 
-  const renderTasks = currentTasks.map((task) => (
-    <li key={task._id} className="list mt-2 list-group-item">
-      {task.name} - {formatDate(task.dueDate)}
-      <button
-        className="m-1 btn btn-primary ml-2"
-        onClick={() => {
-          onEdit(task);
-        }}
-      >
-        Edit
-      </button>
-      <button
-        className="btn btn-danger ml-2"
-        onClick={() => {
-          onDelete(task._id);
-          showNotifications(task.name, 'Task Deleted');
-        }}
-      >
-        Delete
-      </button>
-    </li>
-  ));
-
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(tasks.length / itemsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
   const showNotification = (taskName, operation) => {
-    toast.success(`${taskName}: ${operation}`, {
-      position: 'top-right',
+    toast.info(`${operation}: ${taskName}`, {
+      position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -54,9 +29,10 @@ const TaskList = ({ tasks, onDelete, onEdit }) => {
       draggable: true,
     });
   };
+
   const showNotifications = (taskName, operation) => {
     toast.error(`${taskName}: ${operation}`, {
-      position: 'top-right',
+      position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -68,13 +44,78 @@ const TaskList = ({ tasks, onDelete, onEdit }) => {
   return (
     <div>
       <ToastContainer />
-      <h2 className="mt-4">Task List</h2>
-      <ul className="list-group">{renderTasks}</ul>
+      <h2 className="mt-4">Task List Table</h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Task Name</th>
+            <th scope="col">Task Description</th>
+            <th scope="col">Task Due Date</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentTasks.map((task) => (
+            <tr key={task._id}>
+              <td
+                style={{
+                  maxWidth: "200px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {task.name}
+              </td>
+              <td
+                style={{
+                  maxWidth: "200px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {task.description}
+              </td>
+              <td>{formatDate(task.dueDate)}</td>
+              <td>
+                <button
+                  className="m-1 btn btn-primary"
+                  onClick={() => {
+                    onEdit(task);
+                    showNotification(task.name, "Editing Task");
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger ml-2"
+                  onClick={() => {
+                    onDelete(task._id);
+                    showNotifications(task.name, "Task Deleted");
+                  }}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <nav className="mt-3">
         <ul className="pagination">
-          {pageNumbers.map((number) => (
-            <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-              <button className="page-link" onClick={() => setCurrentPage(number)}>
+          {Array.from(
+            { length: Math.ceil(tasks.length / itemsPerPage) },
+            (_, i) => i + 1
+          ).map((number) => (
+            <li
+              key={number}
+              className={`page-item ${currentPage === number ? "active" : ""}`}
+            >
+              <button
+                className="page-link"
+                onClick={() => setCurrentPage(number)}
+              >
                 {number}
               </button>
             </li>

@@ -53,10 +53,18 @@ body {
   border: 1px solid rgba(209, 213, 219, 0.3)!important;
 }
 
-.list {
+.Tasklist {
   backdrop-filter: blur(2px) saturate(128%)!important;
   -webkit-backdrop-filter: blur(2px) saturate(128%)!important;
   background-color: rgba(255, 255, 255, 0.57)!important;
   border-radius: 12px!important;
   border: 1px solid rgba(209, 213, 219, 0.3)!important;
+}
+
+/* TaskList.css */
+.task-cell {
+  max-height: 50px; /* Set your desired max height for task cells */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
